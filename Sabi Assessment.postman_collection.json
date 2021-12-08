@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "ef55d8cd-bb89-4207-b112-523e510a6b31",
+		"name": "Sabi Assessment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Generate Token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"password\": \"111111\",\r\n\"username\": \"07036982284\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/token/generate-token",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"token",
+						"generate-token"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch User Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"console.log(response.verificationStatus);\r",
+							"\r",
+							"pm.test(\"Verification Status is UNVERIFIED\", () => {\r",
+							"    pm.expect(response.verificationStatus).to.eql(\"UNVERIFIED\")\r",
+							"});\r",
+							"\r",
+							"pm.test(\"referralCode is 07036982284\", () => {\r",
+							"    pm.expect(response.referralCode).to.eql(\"07036982284\")\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Active is true\", () => {\r",
+							"    pm.expect(response.active).to.eql(true)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"firstName\", \"lastName\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Fingerprint",
+						"value": "e0224b3d-74f5-49c5-930f-61d7079c7b3b",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/api/users/userData",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"userData"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
